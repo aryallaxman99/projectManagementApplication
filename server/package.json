@@ -1,0 +1,30 @@
+{
+  "name": "projectmanagementapplication",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aryallaxman99/projectManagementApplication.git"
+  },
+  "author": "LaxmanAryal",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aryallaxman99/projectManagementApplication/issues"
+  },
+  "homepage": "https://github.com/aryallaxman99/projectManagementApplication#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^6.8.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
