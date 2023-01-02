@@ -1,10 +1,9 @@
 import mongoose from "mongoose";
 import appConfig from "../../config/app-config.json" assert { type: "json" };
-const connectionString = appConfig.uri;
 
 const connection = async () => {
   try {
-    await mongoose.set("strictQuery", false).connect(connectionString, {
+    await mongoose.set("strictQuery", false).connect(appConfig.uri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
