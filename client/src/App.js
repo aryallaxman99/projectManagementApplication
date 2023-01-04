@@ -1,7 +1,8 @@
 import React from "react";
 import "./App.css";
-import Register from "./containers/Auth/register";
-import Login from "./containers/Auth/login";
+import Register from "./containers/Auth/Register";
+import Login from "./containers/Auth/Login";
+import ForgotPassword from "./containers/Auth/ForgotPassword";
 import UserDashboard from "./containers/User/UserDashboard";
 import AdminDashboard from "./containers/Admin/AdminDashboard";
 import DeveloperDashboard from "./containers/Developer/DeveloperDashboard";
@@ -36,6 +37,7 @@ const AuthScreens = () => {
     <Routes>
       <Route exact path="/" element={<Login />} />
       <Route exact path="/register" element={<Register />} />
+      <Route exact path="/forgotpassword" element={<ForgotPassword />} />
     </Routes>
   );
 };

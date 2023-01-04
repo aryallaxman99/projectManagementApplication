@@ -23,6 +23,8 @@ const Login = () => {
     const data = await response.json();
     if (data.msg === "login success") {
       dispatch(setUserDetails(data.userDetails));
+    } else {
+      alert(data.msg);
     }
   };
   const SignupSchema = Yup.object().shape({
@@ -82,9 +84,14 @@ const Login = () => {
               </Form>
             )}
           </Formik>
-          <p style={{ marginTop: "10px" }}>
-            Dont have an account? <Link to="/register">Signup</Link> here
-          </p>
+          <a className="forgotPassword" href="/forgotpassword">
+            Forgot password?
+          </a>
+
+          <div className="line"></div>
+          <a role="button" className="register" href="/register">
+            Create new account
+          </a>
         </div>
       </div>
     </section>

@@ -7,7 +7,6 @@ import { useNavigate, Link } from "react-router-dom";
 
 const Register = () => {
   const navigate = useNavigate();
-
   const registerUser = async (values) => {
     const { confirmPassword, ...value } = values;
     const requestOptions = {
@@ -52,15 +51,17 @@ const Register = () => {
               email: "",
               password: "",
               confirmPassword: "",
+              DOB: "",
               country: "",
               userRole: "",
             }}
             validationSchema={SignupSchema}
             onSubmit={(values) => {
+              // console.log(values);
               if (values.password === values.confirmPassword) {
                 registerUser(values);
               } else {
-                console.log("Password didn't matched");
+                alert("Password didn't matched");
               }
             }}
           >
@@ -119,6 +120,18 @@ const Register = () => {
                   <div className="error">{errors.confirmPassword}</div>
                 ) : null}
 
+                <div className="calender">
+                  <p>Date of Birth</p>
+                </div>
+
+                <Field
+                  type="date"
+                  name="DOB"
+                  value={values.DOB}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+
                 <select
                   name="country"
                   value={values.country}
@@ -159,7 +172,7 @@ const Register = () => {
                     User
                   </option>
                   <option value="developer" label="Developer">
-                    Rider
+                    Developer
                   </option>
                 </select>
                 {errors.userRole && touched.userRole ? (
@@ -170,6 +183,8 @@ const Register = () => {
               </Form>
             )}
           </Formik>
+          <div className="line" />
+
           <p style={{ marginTop: "10px" }}>
             Already have an account? Please <Link to="/">Login</Link> to
             continue

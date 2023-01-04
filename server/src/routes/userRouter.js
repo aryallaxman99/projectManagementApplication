@@ -44,7 +44,7 @@ router.post("/login", async (req, res) => {
         });
       } else {
         res.json({
-          msg: "password did not match",
+          msg: `The password you’ve entered is incorrect.`,
         });
       }
     } else {
@@ -55,6 +55,26 @@ router.post("/login", async (req, res) => {
   } catch (err) {
     console.log(err);
   }
+});
+
+router.post("/forgotpassword", async (req, res, next) => {
+  try {
+    const data = await Users.findOne({ email: req.body.email }).exec();
+
+    if (data !== null && data.DOB === req.body.DOB) {
+      console.log(data.password);
+      res.json({
+        msg: "Email found",
+      });
+    } else {
+      res.json({
+        msg: "Email not found",
+      });
+    }
+  } catch (error) {
+    console.error(error);
+  }
+  next();
 });
 
 router.get("/get", async (req, res) => {
