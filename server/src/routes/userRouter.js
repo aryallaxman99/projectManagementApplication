@@ -70,39 +70,37 @@ router.all("/forgotpassword", async (req, res, next) => {
         lowerCaseAlphabets: false,
       });
 
-      const isOtpAlreadyCreated = await Otp.findOne({
+      const isOtpAlreadyExists = await Otp.findOne({
         email: req.body.email,
       });
-      console.log(isOtpAlreadyCreated);
-      if (isOtpAlreadyCreated == null) {
+      console.log(isOtpAlreadyExists);
+      if (isOtpAlreadyExists == null) {
         const otpData = {
           email: req.body.email,
           code: code,
         };
-        console.log("already not created");
         await Otp.create(otpData);
       } else {
-        isOtpAlreadyCreated.code = code;
+        isOtpAlreadyExists.code = code;
 
-        const { _id, __v, ...refactoredData } = isOtpAlreadyCreated.toObject();
-        console.log("already created");
+        const { _id, __v, ...refactoredData } = isOtpAlreadyExists.toObject();
 
-        await Otp.findByIdAndUpdate(isOtpAlreadyCreated._id, refactoredData);
+        await Otp.findByIdAndUpdate(isOtpAlreadyExists._id, refactoredData);
       }
 
-      if (code === req.body.code) {
-        const salt = bcrypt.genSaltSync(saltRounds);
-        const hash = bcrypt.hashSync(req.body.newPassword, salt);
-        data.password = hash;
-        const response = await Users.findByIdAndUpdate({ _id: data._id }, data);
-        if (response) {
-          res.json({ msg: "password has been changed" });
-        } else {
-          res.json({ msg: "something went wrong" });
-        }
-      } else {
-        res.json({ msg: "otp dosen't matched" });
-      }
+      // if (code === req.body.code) {
+      //   const salt = bcrypt.genSaltSync(saltRounds);
+      //   const hash = bcrypt.hashSync(req.body.newPassword, salt);
+      //   data.password = hash;
+      //   const response = await Users.findByIdAndUpdate({ _id: data._id }, data);
+      //   if (response) {
+      //     res.json({ msg: "password has been changed" });
+      //   } else {
+      //     res.json({ msg: "something went wrong" });
+      //   }
+      // } else {
+      //   res.json({ msg: "otp dosen't matched" });
+      // }
     } else {
       res.json({
         msg: "Email not found",
