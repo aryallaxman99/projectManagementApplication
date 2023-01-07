@@ -1,11 +1,13 @@
 import React from "react";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
+  const navigate = useNavigate();
   const frogottonPassword = async (values) => {
     const requestOptions = {
-      method: "POST",
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     };
@@ -15,12 +17,15 @@ const ForgotPassword = () => {
       requestOptions
     );
     const data = await response.json();
-    alert(data.msg);
+    if (data.msg === "Email found") {
+      navigate("/resetpassword");
+    } else {
+      alert(data.msg);
+    }
   };
 
   const EmailSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Required"),
-    DOB: Yup.string().required("Required"),
   });
   return (
     <section className="form_selection">
@@ -29,11 +34,11 @@ const ForgotPassword = () => {
           <h2>Find your account</h2>
           <div className="line" />
           <p>Please enter your email to search for your account.</p>
+          <p>code will be send to your mobile number.</p>
 
           <Formik
             initialValues={{
               email: "",
-              DOB: "",
             }}
             validationSchema={EmailSchema}
             onSubmit={(values) => {
@@ -58,21 +63,6 @@ const ForgotPassword = () => {
                 />
                 {errors.email && touched.email ? (
                   <div className="error">{errors.email}</div>
-                ) : null}
-
-                <div className="calender">
-                  <p>Date of Birth</p>
-                </div>
-
-                <Field
-                  type="date"
-                  name="DOB"
-                  value={values.DOB}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.DOB && touched.DOB ? (
-                  <div className="error">{errors.DOB}</div>
                 ) : null}
 
                 <button type="submit">Search</button>

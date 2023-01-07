@@ -1,4 +1,7 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import "./App.css";
 import Register from "./containers/Auth/Register";
 import Login from "./containers/Auth/Login";
@@ -6,10 +9,7 @@ import ForgotPassword from "./containers/Auth/ForgotPassword";
 import UserDashboard from "./containers/User/UserDashboard";
 import AdminDashboard from "./containers/Admin/AdminDashboard";
 import DeveloperDashboard from "./containers/Developer/DeveloperDashboard";
-
-import { useSelector } from "react-redux";
-
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ResetPassword from "./containers/Auth/ResetPassword";
 
 const App = () => {
   return (
@@ -38,6 +38,7 @@ const AuthScreens = () => {
       <Route exact path="/" element={<Login />} />
       <Route exact path="/register" element={<Register />} />
       <Route exact path="/forgotpassword" element={<ForgotPassword />} />
+      <Route exact path="/resetpassword" element={<ResetPassword />} />
     </Routes>
   );
 };

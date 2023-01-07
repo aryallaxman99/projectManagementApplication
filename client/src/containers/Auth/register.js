@@ -37,6 +37,7 @@ const Register = () => {
       .min(6)
       .matches(passwordRule, { message: "Please create a stronger password" }),
     confirmPassword: Yup.string().required("Required"),
+    mobileNumber: Yup.number().required("Required"),
   });
 
   return (
@@ -51,13 +52,12 @@ const Register = () => {
               email: "",
               password: "",
               confirmPassword: "",
-              DOB: "",
+              mobileNumber: "",
               country: "",
               userRole: "",
             }}
             validationSchema={SignupSchema}
             onSubmit={(values) => {
-              // console.log(values);
               if (values.password === values.confirmPassword) {
                 registerUser(values);
               } else {
@@ -120,17 +120,16 @@ const Register = () => {
                   <div className="error">{errors.confirmPassword}</div>
                 ) : null}
 
-                <div className="calender">
-                  <p>Date of Birth</p>
-                </div>
-
                 <Field
-                  type="date"
-                  name="DOB"
-                  value={values.DOB}
+                  name="mobileNumber"
+                  placeholder="Mobile Number"
+                  value={values.mobileNumber}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
+                {errors.mobileNumber && touched.mobileNumber ? (
+                  <div className="error">{errors.mobileNumber}</div>
+                ) : null}
 
                 <select
                   name="country"
