@@ -1,49 +1,49 @@
 import React from "react";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const ForgotPassword = () => {
+const OtpSender = () => {
   const navigate = useNavigate();
+  const { state } = useLocation();
 
-  const frogottonPassword = async (values) => {
-    const requestOptions = {
+  const CodeSchema = Yup.object().shape({
+    code: Yup.number().required("Required"),
+  });
+
+  const sendCode = async (values) => {
+    const requestOption = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     };
 
     const response = await fetch(
-      "http://localhost:5000/user/forgotpassword",
-      requestOptions
+      "http://localhost:5000/user/otpvalidator",
+      requestOption
     );
     const data = await response.json();
-    if (data.msg === "Email found") {
-      navigate("/otp", { state: { email: values.email } });
+    if (data) {
+      navigate("/resetpassword", { state: values });
     } else {
-      alert(data.msg);
+      alert("otp doesnt matched");
     }
   };
-
-  const EmailSchema = Yup.object().shape({
-    email: Yup.string().email("Invalid email").required("Required"),
-  });
   return (
     <section className="form_selection">
       <div className="container">
         <div className="form">
-          <h2>Find your account</h2>
+          <h2>Enter your code</h2>
           <div className="line" />
-          <p>Please enter your email to search for your account.</p>
-          <p>code will be send to your mobile number.</p>
-
+          <p>Please enter the code to reset your password.</p>
           <Formik
             initialValues={{
-              email: "",
+              code: "",
             }}
-            validationSchema={EmailSchema}
+            validationSchema={CodeSchema}
             onSubmit={(values) => {
-              frogottonPassword(values);
+              values.email = state.email;
+              sendCode(values);
             }}
           >
             {({
@@ -56,17 +56,17 @@ const ForgotPassword = () => {
             }) => (
               <Form onSubmit={handleSubmit}>
                 <Field
-                  name="email"
-                  placeholder="Email"
-                  value={values.email}
+                  name="code"
+                  placeholder="Enter code"
+                  value={values.code}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.email && touched.email ? (
-                  <div className="error">{errors.email}</div>
+                {errors.code && touched.code ? (
+                  <div className="error">{errors.code}</div>
                 ) : null}
 
-                <button type="submit">Search</button>
+                <button type="submit">Submit</button>
               </Form>
             )}
           </Formik>
@@ -75,5 +75,4 @@ const ForgotPassword = () => {
     </section>
   );
 };
-
-export default ForgotPassword;
+export default OtpSender;

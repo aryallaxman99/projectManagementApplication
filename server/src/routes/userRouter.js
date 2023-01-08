@@ -17,7 +17,7 @@ router.post("/register", async (req, res, next) => {
       if (email == null) {
         const data = await Users.create(req.body);
         if (data) {
-          res.json({ msg: "users registered" });
+          res.json({ msg: "user registered" });
         } else {
           res.json({ msg: "something went wrong" });
         }
@@ -59,7 +59,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.all("/forgotpassword", async (req, res, next) => {
+router.post("/forgotpassword", async (req, res, next) => {
   try {
     const isEmailExists = await Users.findOne({ email: req.body.email });
 
@@ -70,6 +70,8 @@ router.all("/forgotpassword", async (req, res, next) => {
         specialChars: false,
         lowerCaseAlphabets: false,
       });
+
+      //aakash sms dekhi mbl number ma otp send gardini
 
       const isOtpAlreadyExists = await Otp.findOne({
         email: req.body.email,
@@ -99,22 +101,43 @@ router.all("/forgotpassword", async (req, res, next) => {
   next();
 });
 
+router.post("/otpvalidator", async (req, res) => {
+  try {
+    const isDataFound = await Otp.findOne({ email: req.body.email });
+    if (isDataFound !== null) {
+      if (isDataFound.code === req.body.code) {
+        res.send(true);
+      } else {
+        res.send(false);
+      }
+    }
+  } catch (error) {
+    console.error(error);
+  }
+});
+
 router.put("/resetpassword", async (req, res, next) => {
   try {
-    const data = await Otp.findOne({ email: req.body.email });
+    const isOtpDataFound = await Otp.findOne({ email: req.body.email });
 
-    if (data.code === req.body.code) {
-      const salt = bcrypt.genSaltSync(saltRounds);
-      const hash = bcrypt.hashSync(req.body.newPassword, salt);
-      data.password = hash;
-      const response = await Users.findByIdAndUpdate({ _id: data._id }, data);
-      if (response) {
-        res.json({ msg: "password has been changed" });
+    if (isOtpDataFound !== null) {
+      const usersData = await Users.findOne({ email: req.body.email });
+      if (isOtpDataFound.code === req.body.code) {
+        const salt = bcrypt.genSaltSync(saltRounds);
+        const hash = bcrypt.hashSync(req.body.newPassword, salt);
+        usersData.password = hash;
+        const response = await Users.findByIdAndUpdate(
+          { _id: usersData._id },
+          usersData
+        );
+        if (response) {
+          res.json({ msg: "password has been changed", status: "true" });
+        } else {
+          res.json({ msg: "something went wrong", status: "false" });
+        }
       } else {
-        res.json({ msg: "something went wrong" });
+        res.json({ msg: "otp dosen't matched" });
       }
-    } else {
-      res.json({ msg: "otp dosen't matched" });
     }
   } catch (error) {
     console.error(error);

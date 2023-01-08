@@ -21,9 +21,11 @@ const Register = () => {
     );
     const data = await response.json();
 
-    if (data) {
+    if (data === "user registered ") {
       alert(data.msg);
       navigate("/");
+    } else {
+      alert(data.msg);
     }
   };
 

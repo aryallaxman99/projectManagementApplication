@@ -9,6 +9,7 @@ import ForgotPassword from "./containers/Auth/ForgotPassword";
 import UserDashboard from "./containers/User/UserDashboard";
 import AdminDashboard from "./containers/Admin/AdminDashboard";
 import DeveloperDashboard from "./containers/Developer/DeveloperDashboard";
+import OtpSender from "./containers/Auth/OtpSender";
 import ResetPassword from "./containers/Auth/ResetPassword";
 
 const App = () => {
@@ -38,6 +39,7 @@ const AuthScreens = () => {
       <Route exact path="/" element={<Login />} />
       <Route exact path="/register" element={<Register />} />
       <Route exact path="/forgotpassword" element={<ForgotPassword />} />
+      <Route exact path="/otp" element={<OtpSender />} />
       <Route exact path="/resetpassword" element={<ResetPassword />} />
     </Routes>
   );

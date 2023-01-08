@@ -1,42 +1,64 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import ShowhidePassword from "../../components/showhidePassword";
 
 const ResetPassword = () => {
-  const CodeSchema = Yup.object().shape({
-    code: Yup.number().required("Required"),
+  const { state } = useLocation();
+  const navigate = useNavigate();
+  const [passwordMsg, setPasswordMsg] = useState("");
+
+  const passwordRule = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+
+  const PasswordSchema = Yup.object().shape({
+    newPassword: Yup.string()
+      .required("Required")
+      .min(6)
+      .matches(passwordRule, { message: "Please create a stronger password" }),
+    confirmPassword: Yup.string().required("Required"),
   });
 
-  const sendCode = async (values) => {
+  const sendPassword = async (values) => {
     const requestOption = {
-      method: "ALL",
-      heasers: { "Content-Type": "application/json" },
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     };
 
     const response = await fetch(
-      "http://localhost:5000/user/forgotpassword",
+      "http://localhost:5000/user/resetpassword",
       requestOption
     );
     const data = await response.json();
-    console.log(data);
+    if ((data.status = "true")) {
+      alert(data.msg);
+      navigate("/");
+    } else {
+      alert(data.msg);
+    }
   };
   return (
     <section className="form_selection">
       <div className="container">
         <div className="form">
-          <h2>Enter your code</h2>
+          <h2> password</h2>
           <div className="line" />
-          <p>Please enter the code to reset your password.</p>
+          <p> Enter your new password.</p>
           <Formik
             initialValues={{
-              code: "",
+              newPassword: "",
+              confirmPassword: "",
             }}
-            validationSchema={CodeSchema}
+            validationSchema={PasswordSchema}
             onSubmit={(values) => {
-              console.log(values);
-              // sendCode(values);
+              if (values.newPassword === values.confirmPassword) {
+                values.email = state.email;
+                values.code = state.code;
+                sendPassword(values);
+              } else {
+                setPasswordMsg("Password doesn't matched");
+              }
             }}
           >
             {({
@@ -49,16 +71,31 @@ const ResetPassword = () => {
             }) => (
               <Form onSubmit={handleSubmit}>
                 <Field
-                  name="code"
-                  placeholder="Enter code"
-                  value={values.code}
+                  name="newPassword"
+                  placeholder="New Password"
+                  value={values.password}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  component={ShowhidePassword}
                 />
-                {errors.code && touched.code ? (
-                  <div className="error">{errors.code}</div>
+                {errors.newPassword && touched.newPassword ? (
+                  <div className="error">{errors.newPassword}</div>
                 ) : null}
-
+                <Field
+                  name="confirmPassword"
+                  placeholder="Confirm Password"
+                  value={values.confirmPassword}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  component={ShowhidePassword}
+                />
+                {errors.confirmPassword && touched.confirmPassword ? (
+                  <div className="error">{errors.confirmPassword}</div>
+                ) : null}
+                <div style={{ color: "red", fontSize: "12px" }}>
+                  {passwordMsg}
+                </div>
+                <br></br>
                 <button type="submit">Submit</button>
               </Form>
             )}
