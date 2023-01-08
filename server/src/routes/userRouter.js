@@ -64,6 +64,7 @@ router.all("/forgotpassword", async (req, res, next) => {
     const isEmailExists = await Users.findOne({ email: req.body.email });
 
     if (isEmailExists !== null) {
+      res.json({ msg: "Email found" });
       const code = otpGenerator.generate(6, {
         upperCaseAlphabets: false,
         specialChars: false,
@@ -73,7 +74,7 @@ router.all("/forgotpassword", async (req, res, next) => {
       const isOtpAlreadyExists = await Otp.findOne({
         email: req.body.email,
       });
-      console.log(isOtpAlreadyExists);
+
       if (isOtpAlreadyExists == null) {
         const otpData = {
           email: req.body.email,
@@ -87,20 +88,6 @@ router.all("/forgotpassword", async (req, res, next) => {
 
         await Otp.findByIdAndUpdate(isOtpAlreadyExists._id, refactoredData);
       }
-
-      // if (code === req.body.code) {
-      //   const salt = bcrypt.genSaltSync(saltRounds);
-      //   const hash = bcrypt.hashSync(req.body.newPassword, salt);
-      //   data.password = hash;
-      //   const response = await Users.findByIdAndUpdate({ _id: data._id }, data);
-      //   if (response) {
-      //     res.json({ msg: "password has been changed" });
-      //   } else {
-      //     res.json({ msg: "something went wrong" });
-      //   }
-      // } else {
-      //   res.json({ msg: "otp dosen't matched" });
-      // }
     } else {
       res.json({
         msg: "Email not found",
@@ -112,7 +99,27 @@ router.all("/forgotpassword", async (req, res, next) => {
   next();
 });
 
-router.put("/resetpassword", async (req, res, next) => {});
+router.put("/resetpassword", async (req, res, next) => {
+  try {
+    const data = await Otp.findOne({ email: req.body.email });
+
+    if (data.code === req.body.code) {
+      const salt = bcrypt.genSaltSync(saltRounds);
+      const hash = bcrypt.hashSync(req.body.newPassword, salt);
+      data.password = hash;
+      const response = await Users.findByIdAndUpdate({ _id: data._id }, data);
+      if (response) {
+        res.json({ msg: "password has been changed" });
+      } else {
+        res.json({ msg: "something went wrong" });
+      }
+    } else {
+      res.json({ msg: "otp dosen't matched" });
+    }
+  } catch (error) {
+    console.error(error);
+  }
+});
 
 router.get("/get", async (req, res) => {
   const data = await Users.find();

@@ -1,6 +1,7 @@
 import React from "react";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
+import { useLocation, useParams } from "react-router-dom";
 
 const ResetPassword = () => {
   const CodeSchema = Yup.object().shape({
@@ -34,7 +35,8 @@ const ResetPassword = () => {
             }}
             validationSchema={CodeSchema}
             onSubmit={(values) => {
-              sendCode(values);
+              console.log(values);
+              // sendCode(values);
             }}
           >
             {({

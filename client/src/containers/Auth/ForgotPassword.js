@@ -5,9 +5,10 @@ import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
+
   const frogottonPassword = async (values) => {
     const requestOptions = {
-      method: "PUT",
+      method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     };
@@ -18,7 +19,7 @@ const ForgotPassword = () => {
     );
     const data = await response.json();
     if (data.msg === "Email found") {
-      navigate("/resetpassword");
+      navigate("/resetpassword", values.email);
     } else {
       alert(data.msg);
     }
