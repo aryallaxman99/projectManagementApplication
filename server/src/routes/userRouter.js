@@ -1,8 +1,10 @@
-import { response, Router } from "express";
+import "dotenv/config";
+import { Router } from "express";
 import bcrypt from "bcrypt";
 import otpGenerator from "otp-generator";
 import Users from "../models/usersModel.js";
 import Otp from "../models/otpModel.js";
+import axios from "axios";
 
 const router = Router();
 const saltRounds = 10;
@@ -64,7 +66,7 @@ router.post("/forgotpassword", async (req, res, next) => {
     const isEmailExists = await Users.findOne({ email: req.body.email });
 
     if (isEmailExists !== null) {
-      res.json({ msg: "Email found" });
+      res.sendStatus(302);
       const code = otpGenerator.generate(6, {
         upperCaseAlphabets: false,
         specialChars: false,
@@ -72,6 +74,22 @@ router.post("/forgotpassword", async (req, res, next) => {
       });
 
       //aakash sms dekhi mbl number ma otp send gardini
+      const otpSender = () => {
+        const sendingData = {
+          auth_token: process.env.SMS_TOKEN,
+          to: isEmailExists.mobileNumber,
+          text: `Your otp code is ${code} ProjectManagementApp`,
+        };
+
+        axios
+          .post(" https://sms.aakashsms.com/sms/v3/send", sendingData)
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      };
 
       const isOtpAlreadyExists = await Otp.findOne({
         email: req.body.email,
@@ -83,12 +101,13 @@ router.post("/forgotpassword", async (req, res, next) => {
           code: code,
         };
         await Otp.create(otpData);
+        otpSender();
       } else {
         isOtpAlreadyExists.code = code;
-
         const { _id, __v, ...refactoredData } = isOtpAlreadyExists.toObject();
 
         await Otp.findByIdAndUpdate(isOtpAlreadyExists._id, refactoredData);
+        otpSender();
       }
     } else {
       res.json({

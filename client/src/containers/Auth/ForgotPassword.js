@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
+  const [responseMessage, setResponseMessage] = useState(false);
 
   const frogottonPassword = async (values) => {
     const requestOptions = {
@@ -17,11 +18,11 @@ const ForgotPassword = () => {
       "http://localhost:5000/user/forgotpassword",
       requestOptions
     );
-    const data = await response.json();
-    if (data.msg === "Email found") {
+    console.log(response.status);
+    if (response.status === 302) {
       navigate("/otp", { state: { email: values.email } });
     } else {
-      alert(data.msg);
+      setResponseMessage(true);
     }
   };
 
@@ -65,7 +66,9 @@ const ForgotPassword = () => {
                 {errors.email && touched.email ? (
                   <div className="error">{errors.email}</div>
                 ) : null}
-
+                <div className="error">
+                  {responseMessage ? "Email not found" : ""}
+                </div>
                 <button type="submit">Search</button>
               </Form>
             )}
