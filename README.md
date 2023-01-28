@@ -3,10 +3,9 @@
 
 ## Tech Stack
 [![MERN Stack](https://skillicons.dev/icons?i=mongodb,expressjs,react,nodejs&perline=4)]()
-
-
-
-
+[![MERN Stack](https://skillicons.dev/icons?i=mongodb,expressjs,react,nodejs&perline=4)]()
+[![MERN Stack](https://skillicons.dev/icons?i=mongodb,expressjs,react,nodejs&perline=4)]()
+[![MERN Stack](https://skillicons.dev/icons?i=mongodb,expressjs,react,nodejs&perline=4)]()
 
 #### Client Side 
 * Reactjs
