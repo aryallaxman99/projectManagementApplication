@@ -2,10 +2,10 @@
 # Project Managemet Application 
 
 ## Tech Stack
-[![MERN Stack](https://skillicons.dev/icons?i=mongodb,expressjs,react,nodejs&perline=4)]()
-[![MERN Stack](https://skillicons.dev/icons?i=mongodb,expressjs,react,nodejs&perline=4)]()
-[![MERN Stack](https://skillicons.dev/icons?i=mongodb,expressjs,react,nodejs&perline=4)]()
-[![MERN Stack](https://skillicons.dev/icons?i=mongodb,expressjs,react,nodejs&perline=4)]()
+[![MERN Stack](https://skillicons.dev/icons?i=mongodb&perline=1)]()
+[![MERN Stack](https://skillicons.dev/icons?i=expressjs&perline=1)]()
+[![MERN Stack](https://skillicons.dev/icons?i=react&perline=1)]()
+[![MERN Stack](https://skillicons.dev/icons?i=nodejs&perline=1)]()
 
 #### Client Side 
 * Reactjs
