@@ -18,7 +18,7 @@ const ForgotPassword = () => {
       "http://localhost:5000/user/forgotpassword",
       requestOptions
     );
-    console.log(response.status);
+
     if (response.status === 302) {
       navigate("/otp", { state: { email: values.email } });
     } else {
