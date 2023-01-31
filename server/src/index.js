@@ -1,4 +1,4 @@
-import "dotenv/config";
+import "dotenv/config"
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
@@ -8,7 +8,6 @@ import userRouter from "./routes/userRouter.js";
 const port = process.env.PORT;
 
 const app = express();
-
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
@@ -19,7 +18,7 @@ app.get("/", (req, res) => {
 
 app.use("/user", userRouter);
 
-app.listen(port, (err) => {
+app.listen(5000, (err) => {
   if (!err) {
     console.log(`server started at ${port}`);
     connect();

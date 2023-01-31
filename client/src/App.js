@@ -3,8 +3,8 @@ import { useSelector } from "react-redux";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import "./App.css";
-import Register from "./containers/Auth/Register";
-import Login from "./containers/Auth/Login";
+import Register from "./containers/Auth/register";
+import Login from "./containers/Auth/login";
 import ForgotPassword from "./containers/Auth/ForgotPassword";
 import UserDashboard from "./containers/User/UserDashboard";
 import AdminDashboard from "./containers/Admin/AdminDashboard";
