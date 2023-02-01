@@ -142,3 +142,30 @@ select option:disabled {
   line-height: 40px;
   font-size: 12px;
 }
+
+.error-page {
+  height: calc(100vh - 63px);
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.error-texts h1 {
+  font-size: 150px;
+  line-height: 160px;
+  margin-bottom: 40px;
+  /* font-weight: 700 !important; */
+}
+
+.error-texts h2 {
+  font-size: 25px;
+  color: rgb(11, 11, 11);
+  font-weight: normal;
+  margin-bottom: 15px;
+}
+
+.error-texts svg {
+  font-size: 100px;
+  color: rgb(255, 0, 0);
+}

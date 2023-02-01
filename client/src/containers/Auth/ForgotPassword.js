@@ -36,7 +36,7 @@ const ForgotPassword = () => {
           <h2>Find your account</h2>
           <div className="line" />
           <p>Please enter your email to search for your account.</p>
-          <p>code will be send to your mobile number.</p>
+          <p>otp will be send to your mobile number.</p>
 
           <Formik
             initialValues={{
