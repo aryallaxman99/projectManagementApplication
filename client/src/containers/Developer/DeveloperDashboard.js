@@ -1,6 +1,13 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 const DeveloperDashboard = () => {
-  return <h1>i am dashboard of developer</h1>;
+  const { name } = useSelector((state) => state.user);
+
+  return (
+    <>
+      <h4>Welcome, {name}</h4>
+    </>
+  );
 };
 export default DeveloperDashboard;
