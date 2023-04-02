@@ -9,6 +9,7 @@ import DeveloperDashboard from "../containers/Developer/DeveloperDashboard";
 import OtpSender from "../containers/Auth/OtpSender";
 import ResetPassword from "../containers/Auth/ResetPassword";
 import ErrorPage from "../containers/ErrorPage/Error";
+import Header from "./Headers/Header";
 
 const ConditionalRouting = () => {
   const { userRole } = useSelector((state) => state.user);
@@ -39,6 +40,7 @@ const AuthScreens = () => {
 const DeveloperScreen = () => {
   return (
     <Routes>
+      <Route exact path="/" element={<Header />} />
       <Route exact path="/" element={<DeveloperDashboard />} />
       <Route path="*" element={<ErrorPage />} />
     </Routes>
@@ -48,6 +50,7 @@ const DeveloperScreen = () => {
 const UserScreen = () => {
   return (
     <Routes>
+      <Route exact path="/" element={<Header />} />
       <Route exact path="/" element={<UserDashboard />} />
       <Route path="*" element={<ErrorPage />} />
     </Routes>
@@ -56,6 +59,7 @@ const UserScreen = () => {
 const AdminScreen = () => {
   return (
     <Routes>
+      <Route exact path="/" element={<Header />} />
       <Route exact path="/" element={<AdminDashboard />} />
       <Route path="*" element={<ErrorPage />} />
     </Routes>
